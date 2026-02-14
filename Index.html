@@ -3,303 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arham Insights - Master Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <title>Arham Numbergen - Generate. Secure. Connect.</title>
+    <meta name="title" content="Arham Numbergen - Smart Lead Tool">
+    <meta name="description" content="🚀 Trusted tool for unique mobile number combinations. Manage your business leads with Arham Numbergen. Fast, Secure, and Professional.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
+    <meta property="og:title" content="Arham Numbergen - Smart Lead Tool">
+    <meta property="og:description" content="Manage your business leads with Arham Numbergen. Professional & Secure.">
+    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
-        :root { --primary: #ff9933; --dark: #0f172a; --success: #22c55e; --danger: #ef4444; --accent: #6366f1; --numbgen: #1a2a6c; }
-        body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; color: #1e293b; padding-bottom: 50px; }
-        
-        #login-overlay { position: fixed; inset: 0; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-card { background: white; padding: 35px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; }
-        .pass-box { position: relative; margin: 20px 0; }
-        .pass-box input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; }
-        .eye-btn { position: absolute; right: 12px; top: 38%; cursor: pointer; color: #64748b; }
+        :root { 
+            --primary: #1a2a6c; 
+            --accent: #27ae60; 
+            --gradient: linear-gradient(135deg, #1a2a6c 0%, #2a48ad 100%);
+            --light: #f1f5f9; 
+        }
 
-        .header { background: var(--dark); color: white; padding: 20px; text-align: center; font-size: 1.5rem; font-weight: 800; border-bottom: 5px solid var(--primary); }
-        .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
-        
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; white-space: nowrap; padding-bottom: 10px; }
-        .tab { padding: 12px 20px; background: white; border-radius: 10px; font-weight: 700; cursor: pointer; color: #64748b; border: 1px solid #e2e8f0; }
-        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--light); 
+            margin: 0; 
+            padding: 0; 
+            color: #1e293b;
+        }
 
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: white; padding: 20px; border-radius: 15px; text-align: center; border-bottom: 4px solid var(--primary); }
+        /* Animated Header */
+        header { 
+            background: white; 
+            padding: 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 0.8rem; color: #64748b; }
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .logo-img { width: 200px; height: auto; transition: transform 0.3s; }
+        .logo-img:hover { transform: scale(1.05); }
 
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #f1f5f9; border-radius: 10px; background: #f8fafc; }
-        .btn-p { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 800; width: 100%; cursor: pointer; }
-        .btn-wa { background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
-        .tab-content { display: none; } .tab-content.active { display: block; }
-        
-        /* Invoice Styling for Printing */
-        #invoice-preview { width: 450px; background: white; padding: 30px; position: fixed; left: -2000px; top: 0; box-sizing: border-box; color: #333; }
-        .inv-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--numbgen); padding-bottom: 15px; margin-bottom: 20px; }
-        .inv-logo-area img { width: 120px; }
-        .inv-title { text-align: right; }
-        .inv-title h1 { margin: 0; color: var(--numbgen); font-size: 24px; }
-        .inv-info { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 20px; font-size: 13px; line-height: 1.6; text-align: left; }
-        .inv-table { width: 100%; margin-bottom: 20px; border-bottom: 2px solid #eee; }
-        .inv-table th { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
-        .inv-table td { padding: 10px; border: 1px solid #ddd; text-align: center; }
-        .inv-summary { margin-left: auto; width: 220px; font-size: 14px; }
-        .inv-summary div { display: flex; justify-content: space-between; padding: 5px 0; }
-        .inv-grand { border-top: 2px solid var(--numbgen); font-weight: 900; color: var(--numbgen); font-size: 16px; margin-top: 5px; padding-top: 10px; }
-        .inv-footer { margin-top: 30px; text-align: center; font-size: 11px; color: #777; border-top: 1px dashed #ccc; padding-top: 10px; }
+        .tagline { 
+            color: #64748b; 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Premium Container */
+        .container { 
+            max-width: 550px; 
+            margin: 40px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        h2 { 
+            color: var(--primary); 
+            font-size: 26px; 
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Modern Inputs */
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { font-size: 13px; font-weight: 700; color: #475569; margin-left: 5px; }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 6px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            box-sizing: border-box;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.1);
+        }
+
+        /* Action Buttons */
+        .btn-gen { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--gradient); 
+            color: white; 
+            border: none; 
+            border-radius: 14px; 
+            font-size: 16px; 
+            font-weight: 700;
+            cursor: pointer; 
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(26, 42, 108, 0.3);
+        }
+
+        .btn-gen:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(26, 42, 108, 0.4); }
+
+        /* Results Area */
+        #resultArea { 
+            margin-top: 25px; 
+            background: #0f172a; 
+            color: #38bdf8;
+            padding: 20px; 
+            border-radius: 16px; 
+            height: 180px; 
+            overflow-y: auto; 
+            text-align: left; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid #1e293b;
+        }
+
+        /* Lead Section */
+        .lead-section { 
+            margin-top: 40px; 
+            padding: 25px; 
+            background: #f0fdf4; 
+            border-radius: 20px; 
+            border: 2px dashed var(--accent);
+        }
+
+        .lead-section h3 { color: #166534; margin-top: 0; font-size: 18px; }
+
+        .btn-download { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            border-radius: 14px; 
+            font-size: 16px; 
+            font-weight: 700;
+            cursor: pointer; 
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover { background: #15803d; }
+
+        footer { 
+            margin: 40px 0; 
+            color: #94a3b8; 
+            font-size: 13px; 
+            font-weight: 500;
+        }
+
+        /* Custom Scrollbar */
+        #resultArea::-webkit-scrollbar { width: 6px; }
+        #resultArea::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<div id="login-overlay">
-    <div class="login-card">
-        <h2 style="margin:0">Admin Access</h2>
-        <div class="pass-box">
-            <input type="password" id="admin-pass" placeholder="Enter Secret Key">
-            <i class="fa fa-eye eye-btn" onclick="togglePass()"></i>
-        </div>
-        <button onclick="checkAuth()" class="btn-p">Verify & Enter</button>
-    </div>
-</div>
+<header>
+    <img src="logo.png" alt="Arham Numbergen Logo" class="logo-img">
+    <div class="tagline">GENERATE • SECURE • CONNECT</div>
+</header>
 
-<div id="admin-app" style="display:none;">
-    <div class="header">ARHAM <span style="color:var(--primary)">INSIGHTS</span> MASTER ADMIN</div>
+<div class="container">
+    <h2>Smart Lead Engine</h2>
     
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card"><h4>Users</h4><p id="s-users" style="font-size:1.5rem; margin:5px 0; font-weight:900;">0</p></div>
-            <div class="stat-card"><h4>Tasks</h4><p id="s-tasks" style="font-size:1.5rem; margin:5px 0; font-weight:900;">0</p></div>
-            <div class="stat-card" style="border-color: var(--numbgen);"><h4>Total Leads</h4><p id="s-leads" style="font-size:1.5rem; margin:5px 0; font-weight:900;">0</p></div>
-            <div class="stat-card"><h4>Maint. Fee</h4><p id="s-fee" style="font-size:1.5rem; margin:5px 0; font-weight:900; color:var(--danger);">₹0</p></div>
-        </div>
+    <div class="input-group">
+        <label>Primary Number Base</label>
+        <input type="text" id="num1" placeholder="e.g. 9876543210">
+    </div>
 
-        <div class="nav-tabs">
-            <div class="tab active" onclick="switchTab(event, 't-post')">Add Task</div>
-            <div class="tab" onclick="switchTab(event, 't-tasks')">Manage Tasks</div>
-            <div class="tab" onclick="switchTab(event, 't-numbergen')">Numbergen Leads</div>
-            <div class="tab" onclick="switchTab(event, 't-billing')">Billing Center</div>
-            <div class="tab" onclick="switchTab(event, 't-users')">All Users</div>
-            <div class="tab" onclick="switchTab(event, 't-payout')">Update Payouts</div>
-            <div class="tab" onclick="switchTab(event, 't-settings')">Site Config</div>
-        </div>
+    <div class="input-group">
+        <label>Secondary Number Base</label>
+        <input type="text" id="num2" placeholder="e.g. 8765432109">
+    </div>
 
-        <div id="t-billing" class="tab-content">
-            <div class="card">
-                <h3><i class="fa fa-file-invoice-dollar"></i> Professional Billing Engine</h3>
-                <div style="background: #f8fafc; padding: 25px; border-radius: 15px; border: 1px solid #e2e8f0;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div><label>Client Name</label><input type="text" id="bill-name" placeholder="Full Name"></div>
-                        <div><label>WhatsApp Number</label><input type="text" id="bill-wa" placeholder="Number"></div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
-                        <div><label>Leads Qty</label><input type="number" id="bill-qty" value="0" oninput="calcBill()"></div>
-                        <div><label>Rate Per Lead (₹)</label><input type="number" id="bill-rate" value="0.10" step="0.01" oninput="calcBill()"></div>
-                        <div><label>Maintenance Fee (₹)</label><input type="number" id="bill-maint" value="0" oninput="calcBill()"></div>
-                    </div>
+    <div class="input-group">
+        <label>Generation Limit</label>
+        <input type="number" id="limit" placeholder="Max 5000" value="100">
+    </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                        <div><label>Discount Amount (₹)</label><input type="number" id="bill-disc" value="0" oninput="calcBill()" style="border-color: var(--danger);"></div>
-                        <div style="background: var(--dark); color: white; border-radius: 10px; padding: 10px; text-align: center;">
-                            <label style="color: #ccc;">Grand Total</label>
-                            <div id="bill-total-view" style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">₹0.00</div>
-                        </div>
-                    </div>
+    <button class="btn-gen" onclick="generate()">Create Smart Combinations</button>
 
-                    <button onclick="generateProfessionalBill()" class="btn-p" style="background: var(--numbgen); margin-top: 25px;">
-                        <i class="fa fa-print"></i> Generate Professional Tax Invoice
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div id="resultArea">Generated results will appear here...</div>
 
-        <div id="t-numbergen" class="tab-content">
-            <div class="card">
-                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3>Arham Numbergen Leads</h3>
-                    <button onclick="fetchLeads()" class="btn-wa">🔄 Refresh</button>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table>
-                        <thead><tr><th>Date</th><th>Name</th><th>WhatsApp</th><th>Numbers</th><th>Action</th></tr></thead>
-                        <tbody id="leadsBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="t-post" class="tab-content active">
-            <div class="card">
-                <h3>Post New Blog/Task</h3>
-                <input type="hidden" id="task-id">
-                <input type="text" id="task-keyword" placeholder="Target Keyword">
-                <textarea id="task-content" rows="8" placeholder="Blog Content..."></textarea>
-                <input type="text" id="task-song" placeholder="MP3 Link">
-                <button onclick="saveTask()" id="task-btn" class="btn-p">Publish Task</button>
-            </div>
-        </div>
-
-        <div id="t-tasks" class="tab-content">
-            <div class="card" style="overflow-x:auto;">
-                <table><thead><tr><th>Keyword</th><th>Music</th><th>Actions</th></tr></thead><tbody id="task-list"></tbody></table>
-            </div>
-        </div>
-
-        <div id="t-users" class="tab-content">
-            <div class="card" style="overflow-x:auto;">
-                <table><thead><tr><th>User Email</th><th>UPI / WhatsApp</th><th>Balance</th></tr></thead><tbody id="user-list"></tbody></table>
-            </div>
-        </div>
-
-        <div id="t-payout" class="tab-content">
-            <div class="card">
-                <h3>Record New Payout</h3>
-                <input type="email" id="p-email" placeholder="User Email"><input type="number" id="p-amount" placeholder="Amount">
-                <button onclick="addPayout()" class="btn-p" style="background:var(--success)">Add Paid Entry</button>
-            </div>
-        </div>
-
-        <div id="t-settings" class="tab-content">
-            <div class="card">
-                <h3>Website Maintenance Charges</h3>
-                <input type="number" id="config-fee" placeholder="Fee"><button onclick="updateSettings()" class="btn-p">Update Fee Live</button>
-            </div>
-        </div>
+    <div class="lead-section">
+        <h3>Export Leads to CSV</h3>
+        <input type="text" id="userName" placeholder="Full Name">
+        <input type="text" id="userWa" placeholder="WhatsApp Number">
+        <button class="btn-download" id="dbBtn" onclick="saveToCloudAndDownload()">Download & Save to Cloud</button>
     </div>
 </div>
 
-<div id="invoice-preview">
-    <div class="inv-header">
-        <div class="inv-logo-area">
-            <img src="logo.png" alt="Arham Numbergen">
-            <p style="font-size: 10px; margin: 5px 0;">Official Billing Statement</p>
-        </div>
-        <div class="inv-title">
-            <h1>TAX INVOICE</h1>
-            <p id="inv-num" style="font-size: 11px;">#INV-2026-X</p>
-        </div>
-    </div>
-
-    <div class="inv-info">
-        <div><strong>BILL TO:</strong><br><span id="inv-name-view"></span><br><span id="inv-wa-view"></span></div>
-        <div style="text-align: right;"><strong>DATE:</strong> <span id="inv-date-view"></span><br><strong>STATUS:</strong> PAID</div>
-    </div>
-
-    <table class="inv-table">
-        <thead><tr><th>Item</th><th>Rate</th><th>Qty</th><th>Total</th></tr></thead>
-        <tbody>
-            <tr><td style="text-align:left;">Leads Generation</td><td id="inv-rate-view"></td><td id="inv-qty-view"></td><td id="inv-subtotal-view"></td></tr>
-            <tr><td style="text-align:left;">Maintenance Charges</td><td>₹1.00</td><td>1</td><td id="inv-maint-view"></td></tr>
-        </tbody>
-    </table>
-
-    <div class="inv-summary">
-        <div><span>Subtotal:</span> <span id="inv-sub-raw"></span></div>
-        <div><span>Maint. Fee:</span> <span id="inv-maint-raw"></span></div>
-        <div style="color:red;"><span>Discount:</span> <span id="inv-disc-raw"></span></div>
-        <div class="inv-grand"><span>GRAND TOTAL:</span> <span id="inv-grand-view"></span></div>
-    </div>
-
-    <div class="inv-footer">
-        <p>This is a computer-generated invoice for digital lead generation services.</p>
-        <p>Thank you! | Powered by Arham Insights</p>
-    </div>
-</div>
+<footer>
+    &copy; 2026 Arham Numbergen | Powered by Arham Insights
+</footer>
 
 <script>
-    const _supabase = supabase.createClient("https://mkzgmrxakattqgbjnwch.supabase.co", "sb_publishable_Div0TjlgvUbXNlwVqNGuag_-dPli5uL");
-    const SECRET = "Jainam Jayati Shasnam";
+// Supabase Live Connection
+const SUPABASE_URL = 'https://mkzgmrxakattqgbjnwch.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Div0TjlgvUbXNlwVqNGuag_-dPli5uL'; 
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function togglePass() { const inp = document.getElementById('admin-pass'); inp.type = inp.type === "password" ? "text" : "password"; }
+let generatedList = [];
 
-    function checkAuth() {
-        if(document.getElementById('admin-pass').value === SECRET) {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('admin-app').style.display = 'block';
-            loadAll();
-        } else { alert("Wrong Key!"); }
+function generate() {
+    const n1 = document.getElementById('num1').value;
+    const n2 = document.getElementById('num2').value;
+    const limit = document.getElementById('limit').value;
+
+    if(n1.length < 10 || n2.length < 10) {
+        alert("Pehle do sahi mobile number daalein.");
+        return;
     }
 
-    async function loadAll() { fetchTasks(); fetchUsers(); fetchSettings(); fetchLeads(); }
+    let digits = (n1 + n2).split('');
+    let results = new Set();
 
-    function calcBill() {
-        const qty = parseInt(document.getElementById('bill-qty').value) || 0;
-        const rate = parseFloat(document.getElementById('bill-rate').value) || 0;
-        const maint = parseFloat(document.getElementById('bill-maint').value) || 0;
-        const disc = parseFloat(document.getElementById('bill-disc').value) || 0;
-        const total = (qty * rate) + maint - disc;
-        document.getElementById('bill-total-view').innerText = "₹" + total.toFixed(2);
+    while(results.size < limit && results.size < 5000) {
+        let shuf = digits.sort(() => 0.5 - Math.random()).slice(0, 10).join('');
+        if(['6','7','8','9'].includes(shuf[0])) {
+            results.add(shuf);
+        }
+    }
+    
+    generatedList = Array.from(results);
+    const resultDiv = document.getElementById('resultArea');
+    resultDiv.innerHTML = generatedList.length > 0 ? generatedList.join('<br>') : "No combinations found.";
+    resultDiv.style.color = "#38bdf8";
+}
+
+async function saveToCloudAndDownload() {
+    const name = document.getElementById('userName').value;
+    const wa = document.getElementById('userWa').value;
+    const btn = document.getElementById('dbBtn');
+
+    if(!name || !wa || generatedList.length === 0) {
+        alert("Details bharein aur numbers generate karein!");
+        return;
     }
 
-    async function generateProfessionalBill() {
-        const name = document.getElementById('bill-name').value;
-        const wa = document.getElementById('bill-wa').value;
-        const qty = document.getElementById('bill-qty').value;
-        const rate = document.getElementById('bill-rate').value;
-        const maint = document.getElementById('bill-maint').value;
-        const disc = document.getElementById('bill-disc').value;
+    btn.disabled = true;
+    btn.innerText = "Encrypting & Saving...";
 
-        if(!name || !wa) return alert("Details bharein!");
+    try {
+        const { error } = await _supabase
+            .from('leads')
+            .insert([{ name: name, whatsapp: wa, count: generatedList.length }]);
 
-        document.getElementById('inv-name-view').innerText = name;
-        document.getElementById('inv-wa-view').innerText = wa;
-        document.getElementById('inv-date-view').innerText = new Date().toLocaleDateString();
-        document.getElementById('inv-rate-view').innerText = "₹" + rate;
-        document.getElementById('inv-qty-view').innerText = qty;
-        
-        const sub = (qty * rate).toFixed(2);
-        document.getElementById('inv-subtotal-view').innerText = "₹" + sub;
-        document.getElementById('inv-sub-raw').innerText = "₹" + sub;
-        document.getElementById('inv-maint-view').innerText = "₹" + maint;
-        document.getElementById('inv-maint-raw').innerText = "₹" + maint;
-        document.getElementById('inv-disc-raw').innerText = "-₹" + disc;
-        
-        const grand = (parseFloat(sub) + parseFloat(maint) - parseFloat(disc)).toFixed(2);
-        document.getElementById('inv-grand-view').innerText = "₹" + grand;
+        if (error) throw error;
 
-        const inv = document.getElementById('invoice-preview');
-        inv.style.left = "0";
-        html2canvas(inv, { scale: 2 }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Bill_${name}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-            inv.style.left = "-2000px";
-            window.open(`https://wa.me/${wa}?text=Aapka Arham Numbergen bill ready hai. Total Amount: ₹${grand}`);
-        });
+        downloadCSV(wa);
+        alert("Success! Cloud backup complete and CSV downloaded.");
+
+        const shareMsg = `Namaste ${name}, Aapka Arham Numbergen data taiyaar hai. Total: ${generatedList.length} leads.`;
+        window.open(`https://wa.me/${wa}?text=${encodeURIComponent(shareMsg)}`);
+
+    } catch (err) {
+        console.error(err);
+        downloadCSV(wa);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Download & Save to Cloud";
     }
+}
 
-    function quickFillBill(name, wa, qty) {
-        document.getElementById('bill-name').value = name;
-        document.getElementById('bill-wa').value = wa;
-        document.getElementById('bill-qty').value = qty;
-        calcBill();
-        switchTab(null, 't-billing');
-    }
-
-    async function fetchLeads() {
-        const { data, error } = await _supabase.from('leads').select('*').order('created_at', {ascending: false});
-        if(error) return;
-        document.getElementById('s-leads').innerText = data?.length || 0;
-        document.getElementById('leadsBody').innerHTML = data.map(l => {
-            const date = new Date(l.created_at).toLocaleDateString();
-            return `<tr><td>${date}</td><td><b>${l.name}</b></td><td>${l.whatsapp}</td><td>${l.count}</td>
-            <td><button class="btn-wa" onclick="quickFillBill('${l.name}', '${l.whatsapp}', ${l.count})">Bill Karein</button></td></tr>`;
-        }).join('');
-    }
-
-    // Baki functions (fetchTasks, fetchUsers, fetchSettings, saveTask etc.) jaise the waise hi raheinge
-    async function fetchSettings() { const { data } = await _supabase.from('site_config').select('*').eq('id', 1).maybeSingle(); if(data) { document.getElementById('s-fee').innerText = "₹" + data.maintenance_fee; document.getElementById('config-fee').value = data.maintenance_fee; } }
-    async function updateSettings() { const fee = document.getElementById('config-fee').value; await _supabase.from('site_config').upsert({ id: 1, maintenance_fee: fee }); alert("Updated!"); fetchSettings(); }
-    async function fetchTasks() { const { data } = await _supabase.from('admin_blogs').select('*').order('created_at', {ascending: false}); document.getElementById('s-tasks').innerText = data?.length || 0; document.getElementById('task-list').innerHTML = data.map(t => `<tr><td><b>${t.keyword}</b></td><td>${t.song_url ? '🎵' : '❌'}</td><td><button onclick="editTask('${t.id}', \`${t.keyword}\`, \`${t.content}\`, '${t.song_url}')">Edit</button></td></tr>`).join(''); }
-    async function fetchUsers() { const { data: profiles } = await _supabase.from('profiles').select('*'); document.getElementById('s-users').innerText = profiles?.length || 0; document.getElementById('user-list').innerHTML = profiles?.map(u => `<tr><td>${u.email}</td><td>WA: ${u.whatsapp || 'N/A'}</td><td>₹0</td></tr>`).join('') || ''; }
-    async function saveTask() { const kw = document.getElementById('task-keyword').value; const ct = document.getElementById('task-content').value; const song = document.getElementById('task-song').value; const id = document.getElementById('task-id').value; const obj = { keyword: kw, content: ct, song_url: song }; if(id) await _supabase.from('admin_blogs').update(obj).eq('id', id); else await _supabase.from('admin_blogs').insert([obj]); location.reload(); }
-    function editTask(id, kw, ct, song) { document.getElementById('task-id').value = id; document.getElementById('task-keyword').value = kw; document.getElementById('task-content').value = ct; document.getElementById('task-song').value = song; switchTab(null, 't-post'); }
-    function switchTab(e, id) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById(id).classList.add('active'); if(e) e.currentTarget.classList.add('active'); else { const t = document.querySelector(`[onclick*="${id}"]`); if(t) t.classList.add('active'); } }
+function downloadCSV(wa) {
+    let csvContent = "data:text/csv;charset=utf-8,ID,Mobile Number\n" 
+        + generatedList.map((num, i) => `${i+1},${num}`).join("\n");
+    
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Arham_Leads_${wa}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 </script>
+
 </body>
 </html>
