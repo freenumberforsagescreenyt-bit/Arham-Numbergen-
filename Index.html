@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Arham Numbergen - Generate. Secure. Connect.</title>
-    <meta name="description" content=" 100% Trusted & Smart Tool for Unique Mobile Number Combinations. Apne business ki leads ko manage karein Arham Numbergen ke saath.">
     
-    <meta property="og:type" content="website">
+    <meta property="og:title" content="Arham Numbergen">
+    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png?v=1">
+    <meta property="og:image:secure_url" content="https://arhamnumbgen.netlify.app/logo.png?v=1">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:description" content="🚀 Trusted tool for unique mobile number combinations and lead management. 100% Secure & Professional.">
     <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
-    <meta property="og:title" content="Arham Numbergen - Smart Lead Tool">
-    <meta property="og:description" content="Apne business leads ko bulk mein generate karein. Fast, Secure and Professional.">
-    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png">
+    <meta property="og:type" content="website">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -110,11 +112,11 @@ async function saveToCloudAndDownload() {
         if (error) throw error;
 
         downloadCSV(wa);
-        alert("Success! Details saved and file downloaded.");
+        alert("Success! Details saved and CSV file downloaded.");
 
-        // WhatsApp Share Message
-        const shareMsg = `Priya ${name}, Aapka Arham Numbergen data taiyaar hai aur download ho gaya hai.`;
-        window.open(`https://wa.me/${wa}?text=${encodeURIComponent(shareMsg)}`);
+        // WhatsApp summary share
+        const msg = `Priya ${name}, Aapka Arham Numbergen data (${generatedList.length} numbers) download ho gaya hai. Dhanyawad!`;
+        window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`);
 
     } catch (err) {
         console.error("Supabase Error:", err);
