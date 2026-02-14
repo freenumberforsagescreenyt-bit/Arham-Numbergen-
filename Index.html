@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arham Numbergen - Generate. Secure. Connect.</title>
     
-    <meta property="og:title" content="Arham Numbergen">
-    <meta property="og:image" content="logo.png">
-    <meta property="og:description" content="Trusted tool for mobile number combinations and lead management.">
+    <title>Arham Numbergen - Generate. Secure. Connect.</title>
+    <meta name="description" content=" 100% Trusted & Smart Tool for Unique Mobile Number Combinations. Apne business ki leads ko manage karein Arham Numbergen ke saath.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
+    <meta property="og:title" content="Arham Numbergen - Smart Lead Tool">
+    <meta property="og:description" content="Apne business leads ko bulk mein generate karein. Fast, Secure and Professional.">
+    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -55,7 +59,6 @@
 </footer>
 
 <script>
-// Supabase Configuration using your details
 const SUPABASE_URL = 'https://mkzgmrxakattqgbjnwch.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Div0TjlgvUbXNlwVqNGuag_-dPli5uL'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -77,7 +80,6 @@ function generate() {
 
     while(results.size < limit && results.size < 5000) {
         let shuf = digits.sort(() => 0.5 - Math.random()).slice(0, 10).join('');
-        // Mobile number check (6,7,8,9 se shuru)
         if(['6','7','8','9'].includes(shuf[0])) {
             results.add(shuf);
         }
@@ -101,16 +103,18 @@ async function saveToCloudAndDownload() {
     btn.innerText = "Saving Data...";
 
     try {
-        // Supabase 'leads' table mein data insert karna
         const { error } = await _supabase
             .from('leads')
             .insert([{ name: name, whatsapp: wa, count: generatedList.length }]);
 
         if (error) throw error;
 
-        // CSV download shuru karna
         downloadCSV(wa);
         alert("Success! Details saved and file downloaded.");
+
+        // WhatsApp Share Message
+        const shareMsg = `Priya ${name}, Aapka Arham Numbergen data taiyaar hai aur download ho gaya hai.`;
+        window.open(`https://wa.me/${wa}?text=${encodeURIComponent(shareMsg)}`);
 
     } catch (err) {
         console.error("Supabase Error:", err);
@@ -138,4 +142,3 @@ function downloadCSV(wa) {
 
 </body>
 </html>
-
