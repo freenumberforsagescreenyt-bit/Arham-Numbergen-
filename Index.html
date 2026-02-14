@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arham Numbergen - Generate. Secure. Connect.</title>
+
+    <meta name="description" content=" Trusted & Smart Tool for Unique Mobile Number Combinations. Apne business ki leads ko manage karein aur professional bulk combinations generate karein Arham Insights ke saath.">
     
-    <meta property="og:title" content="Arham Numbergen">
-    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png?v=1">
-    <meta property="og:image:secure_url" content="https://arhamnumbgen.netlify.app/logo.png?v=1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Arham Numbergen">
+    <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
+    <meta property="og:title" content="Arham Numbergen - Generate. Secure. Connect.">
+    <meta property="og:description" content="Unique combinations aur lead management ke liye Arham Insights ka bharosemand tool.">
+    
+    <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png">
+    <meta property="og:image:secure_url" content="https://arhamnumbgen.netlify.app/logo.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:description" content="🚀 Trusted tool for unique mobile number combinations and lead management. 100% Secure & Professional.">
-    <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
-    <meta property="og:type" content="website">
+    <meta property="og:image:alt" content="Arham Numbergen Logo">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Arham Numbergen">
+    <meta name="twitter:description" content="Trusted tool for mobile number combinations and lead management.">
+    <meta name="twitter:image" content="https://arhamnumbgen.netlify.app/logo.png">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -112,15 +122,13 @@ async function saveToCloudAndDownload() {
         if (error) throw error;
 
         downloadCSV(wa);
-        alert("Success! Details saved and CSV file downloaded.");
+        alert("Success! Details saved and CSV downloaded.");
 
-        // WhatsApp summary share
-        const msg = `Priya ${name}, Aapka Arham Numbergen data (${generatedList.length} numbers) download ho gaya hai. Dhanyawad!`;
+        const msg = `Priya ${name}, Aapka Arham Numbergen data taiyaar hai. Dhanyawad!`;
         window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`);
 
     } catch (err) {
         console.error("Supabase Error:", err);
-        alert("Data cloud mein save nahi ho paya, lekin file download ho rahi hai.");
         downloadCSV(wa);
     } finally {
         btn.disabled = false;
@@ -131,7 +139,6 @@ async function saveToCloudAndDownload() {
 function downloadCSV(wa) {
     let csvContent = "data:text/csv;charset=utf-8,Serial No,Mobile Number\n" 
         + generatedList.map((num, i) => `${i+1},${num}`).join("\n");
-    
     let encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
