@@ -3,216 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Arham Numbergen - Generate. Secure. Connect.</title>
-    <meta name="title" content="Arham Numbergen - Smart Lead Tool">
-    <meta name="description" content="ðŸš€ Trusted tool for unique mobile number combinations. Manage your business leads with Arham Numbergen. Fast, Secure, and Professional.">
     
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://arhamnumbgen.netlify.app/">
-    <meta property="og:title" content="Arham Numbergen - Smart Lead Tool">
-    <meta property="og:description" content="Manage your business leads with Arham Numbergen. Professional & Secure.">
+    <meta property="og:title" content="Arham Numbergen">
     <meta property="og:image" content="https://arhamnumbgen.netlify.app/logo.png">
+    <meta property="og:description" content=" Trusted tool for 10-digit mobile number combinations and lead management.">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        :root { 
-            --primary: #1a2a6c; 
-            --accent: #27ae60; 
-            --gradient: linear-gradient(135deg, #1a2a6c 0%, #2a48ad 100%);
-            --light: #f1f5f9; 
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: var(--light); 
-            margin: 0; 
-            padding: 0; 
-            color: #1e293b;
-        }
-
-        /* Animated Header */
-        header { 
-            background: white; 
-            padding: 20px; 
-            text-align: center; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo-img { width: 200px; height: auto; transition: transform 0.3s; }
-        .logo-img:hover { transform: scale(1.05); }
-
-        .tagline { 
-            color: #64748b; 
-            font-size: 14px; 
-            font-weight: 600; 
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
-        /* Premium Container */
-        .container { 
-            max-width: 550px; 
-            margin: 40px auto; 
-            background: white; 
-            padding: 40px; 
-            border-radius: 24px; 
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        h2 { 
-            color: var(--primary); 
-            font-size: 26px; 
-            font-weight: 800;
-            margin-bottom: 25px;
-            letter-spacing: -0.5px;
-        }
-
-        /* Modern Inputs */
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { font-size: 13px; font-weight: 700; color: #475569; margin-left: 5px; }
-
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            margin-top: 6px; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            box-sizing: border-box;
-            transition: all 0.3s;
-            background: #f8fafc;
-        }
-
-        input:focus { 
-            outline: none; 
-            border-color: var(--primary); 
-            background: white;
-            box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.1);
-        }
-
-        /* Action Buttons */
-        .btn-gen { 
-            width: 100%; 
-            padding: 16px; 
-            background: var(--gradient); 
-            color: white; 
-            border: none; 
-            border-radius: 14px; 
-            font-size: 16px; 
-            font-weight: 700;
-            cursor: pointer; 
-            margin-top: 20px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 15px -3px rgba(26, 42, 108, 0.3);
-        }
-
-        .btn-gen:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(26, 42, 108, 0.4); }
-
-        /* Results Area */
-        #resultArea { 
-            margin-top: 25px; 
-            background: #0f172a; 
-            color: #38bdf8;
-            padding: 20px; 
-            border-radius: 16px; 
-            height: 180px; 
-            overflow-y: auto; 
-            text-align: left; 
-            font-family: 'Fira Code', monospace; 
-            font-size: 14px;
-            line-height: 1.6;
-            border: 1px solid #1e293b;
-        }
-
-        /* Lead Section */
-        .lead-section { 
-            margin-top: 40px; 
-            padding: 25px; 
-            background: #f0fdf4; 
-            border-radius: 20px; 
-            border: 2px dashed var(--accent);
-        }
-
-        .lead-section h3 { color: #166534; margin-top: 0; font-size: 18px; }
-
-        .btn-download { 
-            width: 100%; 
-            padding: 16px; 
-            background: var(--accent); 
-            color: white; 
-            border: none; 
-            border-radius: 14px; 
-            font-size: 16px; 
-            font-weight: 700;
-            cursor: pointer; 
-            margin-top: 15px;
-            transition: all 0.3s;
-        }
-
-        .btn-download:hover { background: #15803d; }
-
-        footer { 
-            margin: 40px 0; 
-            color: #94a3b8; 
-            font-size: 13px; 
-            font-weight: 500;
-        }
-
-        /* Custom Scrollbar */
-        #resultArea::-webkit-scrollbar { width: 6px; }
-        #resultArea::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        :root { --primary: #1a2a6c; --accent: #27ae60; --light: #f1f5f9; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); margin: 0; text-align: center; color: #1e293b; }
+        header { background: white; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .logo-img { width: 200px; height: auto; }
+        .container { max-width: 500px; margin: 40px auto; background: white; padding: 35px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; box-sizing: border-box; }
+        .btn-gen { width: 100%; padding: 16px; background: linear-gradient(135deg, #1a2a6c 0%, #2a48ad 100%); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        #resultArea { margin-top: 20px; background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 12px; height: 180px; overflow-y: auto; text-align: left; font-family: monospace; }
+        .lead-section { margin-top: 30px; padding: 20px; background: #f0fdf4; border-radius: 15px; border: 2px dashed var(--accent); }
+        .btn-download { width: 100%; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        footer { margin: 30px 0; color: #94a3b8; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <header>
     <img src="logo.png" alt="Arham Numbergen Logo" class="logo-img">
-    <div class="tagline">GENERATE â€¢ SECURE â€¢ CONNECT</div>
+    <p style="color:#64748b; font-weight:600; margin-top:5px;">GENERATE • SECURE • CONNECT</p>
 </header>
 
 <div class="container">
-    <h2>Smart Lead Engine</h2>
-    
-    <div class="input-group">
-        <label>Primary Number Base</label>
-        <input type="text" id="num1" placeholder="e.g. 9876543210">
-    </div>
+    <h2>Smart 10-Digit Generator</h2>
+    <input type="text" id="num1" placeholder="First TRX I'd Number (e.g. 8034251670)">
+    <input type="text" id="num2" placeholder="Second TRX I'd Number (e.g. 2786821734 )">
+    <input type="number" id="limit" placeholder="Limit (Max 5000)" value="100">
+    <button class="btn-gen" onclick="generate()">Generate 10-Digit Numbers</button>
 
-    <div class="input-group">
-        <label>Secondary Number Base</label>
-        <input type="text" id="num2" placeholder="e.g. 8765432109">
-    </div>
-
-    <div class="input-group">
-        <label>Generation Limit</label>
-        <input type="number" id="limit" placeholder="Max 5000" value="100">
-    </div>
-
-    <button class="btn-gen" onclick="generate()">Create Smart Combinations</button>
-
-    <div id="resultArea">Generated results will appear here...</div>
+    <div id="resultArea">Yahan results dikhenge...</div>
 
     <div class="lead-section">
-        <h3>Export Leads to CSV</h3>
-        <input type="text" id="userName" placeholder="Full Name">
+        <h3>Export to CSV</h3>
+        <input type="text" id="userName" placeholder="Aapka Naam">
         <input type="text" id="userWa" placeholder="WhatsApp Number">
-        <button class="btn-download" id="dbBtn" onclick="saveToCloudAndDownload()">Download & Save to Cloud</button>
+        <button class="btn-download" id="dbBtn" onclick="saveToCloudAndDownload()">Download & Save</button>
     </div>
 </div>
 
-<footer>
-    &copy; 2026 Arham Numbergen | Powered by Arham Insights
-</footer>
+<footer>&copy; 2026 Arham Numbergen | Powered by Arham Insights</footer>
 
 <script>
-// Supabase Live Connection
 const SUPABASE_URL = 'https://mkzgmrxakattqgbjnwch.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Div0TjlgvUbXNlwVqNGuag_-dPli5uL'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -220,29 +60,31 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let generatedList = [];
 
 function generate() {
-    const n1 = document.getElementById('num1').value;
-    const n2 = document.getElementById('num2').value;
-    const limit = document.getElementById('limit').value;
+    const n1 = document.getElementById('num1').value.trim();
+    const n2 = document.getElementById('num2').value.trim();
+    const limit = parseInt(document.getElementById('limit').value);
 
-    if(n1.length < 10 || n2.length < 10) {
-        alert("Pehle do sahi mobile number daalein.");
+    if (n1.length < 10 || n2.length < 10) {
+        alert("Kripya dono 10-digit numbers sahi se bharein!");
         return;
     }
 
     let digits = (n1 + n2).split('');
     let results = new Set();
 
-    while(results.size < limit && results.size < 5000) {
+    // Logic for EXACT 10 digits
+    while (results.size < limit && results.size < 10000) {
+        // Shuffle and pick EXACTLY 10 digits
         let shuf = digits.sort(() => 0.5 - Math.random()).slice(0, 10).join('');
-        if(['6','7','8','9'].includes(shuf[0])) {
+        
+        // Validation: Start with 6-9 AND must be exactly 10 digits long
+        if (/^[6-9][0-9]{9}$/.test(shuf)) {
             results.add(shuf);
         }
     }
     
     generatedList = Array.from(results);
-    const resultDiv = document.getElementById('resultArea');
-    resultDiv.innerHTML = generatedList.length > 0 ? generatedList.join('<br>') : "No combinations found.";
-    resultDiv.style.color = "#38bdf8";
+    document.getElementById('resultArea').innerHTML = generatedList.length > 0 ? generatedList.join('<br>') : "No valid 10-digit numbers found.";
 }
 
 async function saveToCloudAndDownload() {
@@ -256,38 +98,31 @@ async function saveToCloudAndDownload() {
     }
 
     btn.disabled = true;
-    btn.innerText = "Encrypting & Saving...";
+    btn.innerText = "Saving...";
 
     try {
         const { error } = await _supabase
             .from('leads')
             .insert([{ name: name, whatsapp: wa, count: generatedList.length }]);
-
         if (error) throw error;
-
         downloadCSV(wa);
-        alert("Success! Cloud backup complete and CSV downloaded.");
-
-        const shareMsg = `Namaste ${name}, Aapka Arham Numbergen data taiyaar hai. Total: ${generatedList.length} leads.`;
-        window.open(`https://wa.me/${wa}?text=${encodeURIComponent(shareMsg)}`);
-
+        alert("Data saved and 10-digit list downloaded!");
     } catch (err) {
         console.error(err);
         downloadCSV(wa);
     } finally {
         btn.disabled = false;
-        btn.innerText = "Download & Save to Cloud";
+        btn.innerText = "Download & Save";
     }
 }
 
 function downloadCSV(wa) {
     let csvContent = "data:text/csv;charset=utf-8,ID,Mobile Number\n" 
         + generatedList.map((num, i) => `${i+1},${num}`).join("\n");
-    
     let encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Arham_Leads_${wa}.csv`);
+    link.setAttribute("download", `Arham_10Digit_Leads_${wa}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
